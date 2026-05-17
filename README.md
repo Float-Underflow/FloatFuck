@@ -24,8 +24,8 @@ This is not _the_ brainfuck standard; the intent of this spec is just to nail do
 
 ### Memory Model
 Traditionally, brainfuck runtime memory is a contiguous 'ticker-tape' of cells (usually 8-bit words), accessable through a single read-write pointer called the "data pointer" <cite>[<sup>1</sup>][1]</cite>. 
-```                                         
-                                    |          | 
+```
+                                    |          |
 ---+----------+----------+----------|----------|----------+----------+
  0 | 01110101 | 10100011 | 00110010 | 00000000 | 11111111 | 01101011 |
 ---+----------+----------+----------|----------|----------+----------+
@@ -42,23 +42,23 @@ If we apply a Move-Left to the above ticker-tape, we get the following:
 
 ```
                             <-------- Shift Direction
-                                         
-                         |          |           
+
+                         |          |
 ---+----------+----------|----------|----------+----------+----------+
  0 | 01110101 | 10100011 | 00110010 | 00000000 | 11111111 | 01101011 |
 ---+----------+----------|----------|----------+----------+----------+
-                         |          |          
+                         |          |
                                ^          ^
                                |          \ -------- Old Position
                          Data Pointer
-                        (New Position)  
+                        (New Position)
 ```
 #### Move-Right
 Alternatively, if we apply a Move-Left to our original ticker-tape, we get this:
 
 ```
                             Shift Direction -------->
-                                         
+        
                                                |          |
 ---+----------+----------+----------+----------|----------|----------+
  0 | 01110101 | 10100011 | 00110010 | 00000000 | 11111111 | 01101011 |
@@ -67,8 +67,30 @@ Alternatively, if we apply a Move-Left to our original ticker-tape, we get this:
                                          ^           ^
                    Old Position -------- /           |
                                                Data Pointer
-                                              (New Position)  
+                                              (New Position)
 ```
+#### What happens at the edges?
+Consider the following situation, where the data pointer is pointing at the first cell of a ticker tape:
+```
+Cell index: |     0    |     1          2          3          4          5      
+            |----------|----------+----------+----------+----------+----------+----
+            | 01110101 | 10100011 | 00110010 | 00000000 | 11111111 | 01101011 | ...
+            |----------|----------+----------+----------+----------+----------+----
+            |          |
+                  ^
+                  \ ------- Data Pointer
+```
+A Move-Left would result in this:
+```
+Cell index: |     ?    |     0          1          2          3          4      
+            |----------|----------+----------+----------+----------+----------+----
+            | 01010101 | 01110101 | 10100011 | 00110010 | 00000000 | 11111111 | ...
+            |----------|----------+----------+----------+----------+----------+----
+            |          |
+                  ^
+                  \ ------- Data Pointer
+```
+
 
 [1]: https://en.wikipedia.org/wiki/Brainfuck#Language_design
 [2]: https://esolangs.org/wiki/Brainfuck#Language_overview
