@@ -25,13 +25,15 @@ This is not _the_ brainfuck standard; the intent of this spec is just to nail do
 ### Memory Model
 Traditionally, brainfuck runtime memory is a contiguous 'ticker-tape' of cells (usually 8-bit words), accessable through a single read-write pointer called the "data pointer" <cite>[<sup>1</sup>][1]</cite>. 
 ```
+                            Ticker Tape Memory
+
                                     |          |
 ---+----------+----------+----------|----------|----------+----------+
  0 | 01110101 | 10100011 | 00110010 | 00000000 | 11111111 | 01101011 |
 ---+----------+----------+----------|----------|----------+----------+
-                                    |          |
-                                          ^
-                                          |
+                    ^         ^     |          |
+                    |         |           ^
+     Cells --------------------           |
                                     Data Pointer
 ```
 The data pointer is the only way to read or write program data, meaning that data manipulation within a brainfuck program occurs one byte at at a time.
